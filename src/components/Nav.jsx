@@ -1,4 +1,5 @@
 // import Cookies from "universal-cookie";
+import { useEffect, useState } from "react";
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
@@ -18,6 +19,12 @@ export default function Nav() {
   const SITENAME = import.meta.env.VITE_SITENAME;
 
   // Query State
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+useEffect(() => {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+}, [theme]);
   const [query, setQuery] = React.useState("");
   const [debouncedVal, setDebouncedVal] = React.useState("");
   const [searcResult, setSearchResult] = useState([]);
@@ -27,6 +34,16 @@ export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation(); 
 
+
+<label className="switch">
+  <input
+    type="checkbox"
+    checked={theme === "dark"}
+    onChange={() => setTheme(theme === "light" ? "dark" : "light")}
+  />
+  <span className="slider"></span>
+</label>
+  
   // Update navStatus based on the current path
   useEffect(() => {
     const path = location.pathname;
